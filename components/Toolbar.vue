@@ -13,7 +13,7 @@ const togglePlay = () => {
 
 <template>
   <div class="absolute bottom-4 left-1/2 -translate-x-1/2">
-    <div class="flex items-center gap-2 p-2 bg-white dark:bg-black rounded-full shadow-lg">
+    <div class="flex items-center gap-2 p-2 bg-white dark:bg-black rounded-full shadow-xl border border-gray-200 dark:border-gray-700">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger as-child>
