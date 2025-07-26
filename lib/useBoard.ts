@@ -30,7 +30,7 @@ export function useBoard() {
     const index: [number, number] = [Math.round(idx[0]), Math.round(idx[1])];
     const position: [number, number] = [
       index[0],
-      index[1] * Math.cos(Math.PI / 3) // Assuming a simplified hexagonal projection
+      index[1] * 2 * Math.sin(Math.PI / 3) // Assuming a simplified hexagonal projection
     ];
     return new Point(index, position);
   };
@@ -39,16 +39,20 @@ export function useBoard() {
     const position: [number, number] = pos;
     const index: [number, number] = [
       Math.round(position[0]),
-      Math.round(position[1] / Math.cos(Math.PI / 3)) // Inverse of the simplified projection
+      Math.round(position[1] / Math.sin(Math.PI / 3)/ 2) // Inverse of the simplified projection
     ];
     return new Point(index, position);
   };
 
   class Group {
-    points: Set<Point>;
+    points: Array<Point>;
 
-    constructor(points: Set<Point>) {
-      this.points = points;
+    constructor(points: Array<Point>) {
+      const uniquePoints = new Map<string, Point>();
+      points.forEach(point => {
+        uniquePoints.set(`${point.index[0]},${point.index[1]}`, point);
+      });
+      this.points = Array.from(uniquePoints.values());
     }
 
     public rotate(units: number): Group {
@@ -63,11 +67,11 @@ export function useBoard() {
   }
 
   const createTriangleGroup = (size: number) => {
-    let points = new Set<Point>();
+    let points: Array<Point> = [];
 
     for(let i = 0; i < size; ++i){
         for(let j = 0; j <= i; ++j){
-            points.add(createPointFromIndex([-i+2*j, j]))
+            points.push(createPointFromIndex([-i+2*j, i]))
         }
     }
 
@@ -100,12 +104,12 @@ export function useBoard() {
     players: Array<PlayerBoard>;
 
     constructor(){
-        let base = new Set<Point>();
+        let base: Array<Point> = [];
         this.players = [];
 
         for(let i = 0; i < 6; ++i){
             let baseTriangle = createTriangleGroup(5).rotate(i)
-            base.union(baseTriangle.points);
+            base = base.concat(baseTriangle.points);
             this.players.push(new PlayerBoard(i))
         }
 
