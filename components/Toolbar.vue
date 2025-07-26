@@ -3,11 +3,25 @@ import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { RotateCcw, Play, Pause, RefreshCw, RotateCw } from 'lucide-vue-next'
+import { useBoard } from '@/lib/useBoard'
+import { useGameConfig } from '@/lib/useGameConfig'
+import Board from '@/components/Board.vue'
 
-const isPlaying = ref(false)
+const props = defineProps<{ boardRef: InstanceType<typeof Board> | null }>()
+
+const isPlaying = ref(true)
+const { setPlayers } = useBoard()
+const { selectedPreset } = useGameConfig()
 
 const togglePlay = () => {
   isPlaying.value = !isPlaying.value
+}
+
+const { players } = useGameConfig()
+
+const restartGame = () => {
+  setPlayers(players.value)
+  props.boardRef?.draw()
 }
 </script>
 
@@ -42,7 +56,7 @@ const togglePlay = () => {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger as-child>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" @click="restartGame">
               <RefreshCw class="w-6 h-6" />
             </Button>
           </TooltipTrigger>
