@@ -9,8 +9,12 @@ const isCollapsed = ref(false)
 const activePanel = ref<'Game' | 'Models' | null>('Game')
 
 function selectPanel(panel: 'Game' | 'Models') {
-  isCollapsed.value = false
-  activePanel.value = panel
+  if (activePanel.value === panel && !isCollapsed.value) {
+    toggleCollapse()
+  } else {
+    isCollapsed.value = false
+    activePanel.value = panel
+  }
 }
 
 function toggleCollapse() {
