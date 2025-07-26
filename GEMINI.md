@@ -1,0 +1,2 @@
+- Please use shadcn-vue components where every possible
+- use tailwindv4 for styling when needed
