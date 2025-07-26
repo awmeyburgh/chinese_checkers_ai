@@ -28,7 +28,7 @@ function toggleCollapse() {
     <div
       :class="[
         'flex flex-col justify-between border-r bg-gray-100/40 p-2 transition-all duration-300 ease-in-out',
-        isCollapsed ? 'w-16' : 'w-64',
+        isCollapsed ? 'w-16' : 'w-48',
       ]"
     >
       <div>
